@@ -1,5 +1,10 @@
 import { useEffect, useState } from 'react';
-import { getApiBaseUrl, normalizeRecords } from '../lib/api.js';
+import { normalizeRecords } from '../lib/api.js';
+
+const codespaceName = import.meta.env.VITE_CODESPACE_NAME?.trim();
+const apiUrl = codespaceName
+  ? `https://${codespaceName}-8000.app.github.dev/api/leaderboard/`
+  : 'http://localhost:8000/api/leaderboard/';
 
 export default function Leaderboard() {
   const [entries, setEntries] = useState([]);
@@ -8,7 +13,7 @@ export default function Leaderboard() {
   useEffect(() => {
     async function loadLeaderboard() {
       try {
-        const response = await fetch(getApiBaseUrl('leaderboard'));
+        const response = await fetch(apiUrl);
         if (!response.ok) {
           throw new Error(`Request failed with ${response.status}`);
         }
