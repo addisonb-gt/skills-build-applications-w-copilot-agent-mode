@@ -9,11 +9,12 @@ const modelMap = {
     workouts: WorkoutModel,
 };
 const createCollectionRoute = (resource) => {
-    router.get(`/api/${resource}/`, async (_req, res) => {
+    const basePath = `/api/${resource}`;
+    router.get([basePath, `${basePath}/`], async (_req, res) => {
         const records = await modelMap[resource].find({});
         res.json(records);
     });
-    router.post(`/api/${resource}/`, async (req, res) => {
+    router.post([basePath, `${basePath}/`], async (req, res) => {
         const record = await modelMap[resource].create(req.body);
         res.status(201).json(record);
     });
